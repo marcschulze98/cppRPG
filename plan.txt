@@ -1,0 +1,48 @@
+cppRPG features&ideas
+
+-? = maybe
+→ = choice
+
+Skills:
+- Basic skills for every class + learn later on
+- Non-combat skill (e.g. for profession)
+- scalar
+- skilltree
+
+Professions:
+- e.g. smith, cook, enchanter
+- can be leveled
+- needs buyable and findable ingredients
+
+Classes:
+- some base classes + custom
+- restricts weapon and armor classes (bonus/penalty for different classes)
+- Damage attribute for different skills/items  (int for mages, agi for small weapons, str for heavy weapons)
+- sets attribute growth rate (e.g. +3 str for warrior per level, but only +1 int)
+- sets attribute bonus and penalties (warriors start with less int than a mage)
+- Specialisations
+
+Races:
+- sets attribute bonus and penalties (orcs start with less int than humans)
+-? sets extra bonuses (humans need less xp, elves regen faster etc.)
+
+Items:
+- armors slots: head, hands, breast, legs, feet
+- level/attribute requirements
+- active skills
+- armor classes (light, medium, heavy)
+- weapon slots: main hand, off hand, two handed
+- weight (no equipped exhaustion)
+
+Quests:
+-? hook bases (certain actions emit signals with metadata that can be subscribed to by quests, which can track their progress with the metadata)
+→ Global or user specific?
+→ World progress or user progress?
+
+Misc.:
+-? Groups, Dungeons, Raids
+- Open world
+→ Respawn of enemies and items?
+→ realtime, turn-based, both?
+→ MMO or single rooms?
+- rpg elements (interaction with environment)

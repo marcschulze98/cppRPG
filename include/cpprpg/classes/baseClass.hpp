@@ -2,6 +2,8 @@
 #define CPPRPG_CLASSES_BASECLASS
 
 #include <string>
+#include <array>
+#include <memory>
 #include <cpprpg/classes/skills.hpp>
 
 #define DEFAULT_CLASSNAME "Classless"
@@ -26,8 +28,8 @@ class BaseClass
 		constexpr static attr_type dexterity = DEFAULT_DEXTERITY_CLASS;
 		constexpr static attr_type initiative = DEFAULT_INITATIVE_CLASS;
 		constexpr static ArmorType armor_type = ArmorType::DEFAULT_ARMOR_TYPE;
-		constexpr static WeaponType weapon_types[] = {};
-		constexpr static Skill skill_list[] = {FistAttack()};
+		constexpr static std::array<WeaponType, 0> weapon_types = {};
+		constexpr static std::array<Skill, 2> skill_list = {Skill::FistAttack(), Skill::Bash()};
 };
 
 class Warrior: public BaseClass

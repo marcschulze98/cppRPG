@@ -1,7 +1,7 @@
 #ifndef CPPRPG_RACES_BASERACE
 #define CPPRPG_RACES_BASERACE
 
-#import <string>
+#include <string>
 
 #define DEFAULT_RACENAME "Raceless"
 #define DEFAULT_CONSTITUTION_RACE 10

@@ -9,6 +9,22 @@ Skills:
 - scalar
 - skilltree
 
+	- lvl 10: scalar with some choices
+	- choice of skilltree
+	- lvl 40: skilltree
+	- choice of specialisation
+	- choice of skilltree
+
+filestructure:
+Fist Attack
+Bash~Defend
+Ruin Game
+tree1~tree2~tree3 only one tree shown
+1~2
+5|3~4
+7|8|9
+|6~123~10| etc.
+
 Professions:
 - e.g. smith, cook, enchanter
 - can be leveled
@@ -21,6 +37,14 @@ Classes:
 - sets attribute growth rate (e.g. +3 str for warrior per level, but only +1 int)
 - sets attribute bonus and penalties (warriors start with less int than a mage)
 - Specialisations
+
+filestructure:
+[mage]
+intelligence=2
+name=Mage
+skilltrees=warrior_skilltree
+specialisations=arcane_warrior|elementalist|warlock
+[warrior] etc.
 
 Races:
 - sets attribute bonus and penalties (orcs start with less int than humans)

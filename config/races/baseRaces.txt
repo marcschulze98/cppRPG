@@ -1,0 +1,6 @@
+[Human]
+intelligence=2
+[Elf]
+dexterity=2
+[Orc]
+strength=2

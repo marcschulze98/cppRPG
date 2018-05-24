@@ -1,0 +1,8 @@
+[Warrior]
+strength=1
+constitution=1
+[Mage]
+intelligence=2
+[Rouge]
+dexterity=1
+initiative=1

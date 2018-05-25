@@ -4,6 +4,7 @@ cppRPG features&ideas
 → = choice
 
 Skills:
+- pointer to constructors (hard coded)
 - Basic skills for every class + learn later on
 - Non-combat skill (e.g. for profession)
 - scalar
@@ -16,14 +17,16 @@ Skills:
 	- choice of skilltree
 
 filestructure:
-Fist Attack
-Bash~Defend
-Ruin Game
-tree1~tree2~tree3 only one tree shown
-1~2
+Warrior~Mage~Rouge vector
+0:Fist Attack ->root-tree 					//#:relativ lvl to start of tree
+5:Bash~Defend ->1. branch decision
+8:Ruin Game ->2. branch
+10:tree1~tree2~tree3 -> next tree specialisation
+0:1~2|34| -> 1. branch
 5|3~4
 7|8|9
 |6~123~10| etc.
+10: Warrior -> next tree specialisation
 
 Professions:
 - e.g. smith, cook, enchanter
@@ -31,23 +34,21 @@ Professions:
 - needs buyable and findable ingredients
 
 Classes:
-- some base classes + custom
-- restricts weapon and armor classes (bonus/penalty for different classes)
+- some base classes + custom ✓
+- restricts weapon and armor classes (?bonus/penalty for different classes) ✓
 - Damage attribute for different skills/items  (int for mages, agi for small weapons, str for heavy weapons)
 - sets attribute growth rate (e.g. +3 str for warrior per level, but only +1 int)
 - sets attribute bonus and penalties (warriors start with less int than a mage)
 - Specialisations
 
-filestructure:
-[mage]
+filestructure: ✓
+[Mage]
 intelligence=2
-name=Mage
-skilltrees=warrior_skilltree
-specialisations=arcane_warrior|elementalist|warlock
+skilltrees=Mage  //optional
 [warrior] etc.
 
 Races:
-- sets attribute bonus and penalties (orcs start with less int than humans)
+- sets attribute bonus and penalties (orcs start with less int than humans) ✓
 -? sets extra bonuses (humans need less xp, elves regen faster etc.)
 
 Items:

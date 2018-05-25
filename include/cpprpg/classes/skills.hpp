@@ -1,18 +1,20 @@
 #ifndef CPPRPG_CLASSES_SKILLS
 #define CPPRPG_CLASSES_SKILLS
 
+#include <cpprpg/common/config.hpp>
+
 enum class SkillType {SELF, TARGETED, AREA};
+
+class Character;
 
 struct skill_arg
 {
-	//Character target;
-	//Character user;
+	Character& target;
+	Character& user;
 	//Point targetarea;
-
 };
 // to be able to put skills in arrays they need to be the same type,
 // so just make different constructors of Skill for different skills
-
 
 class Skill
 {
@@ -27,15 +29,11 @@ class Skill
 		SkillType type;
 
 
-		constexpr static Skill FistAttack()
-		{
-			return Skill("Punch", "Inflicts basic attack damage to an enemy", nullptr, SkillType::TARGETED);
-		}
+		constexpr static Skill Hit();
+		constexpr static Skill Bash();
+		constexpr static Skill Defend();
+		constexpr static Skill Taunt();
 
-		constexpr static Skill Bash()
-		{
-			return Skill("Bash", "Inflicts 2 * basic attack damage to an enemy", nullptr, SkillType::TARGETED);
-		}
 
 		//all the skills as constructors
 

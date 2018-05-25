@@ -1,0 +1,54 @@
+#ifndef CPPRPG_COMMON_CONFIG_HPP
+#define CPPRPG_COMMON_CONFIG_HPP
+
+
+#include <cpprpg/common/iniparse.hpp>
+#include <vector>
+#include <string>
+
+using attr_type = int;
+#define CONFIG_FOLDER "/home/karl/github/cppRPG/config/"
+#define LEVEL_CAP 100
+
+class Skill;
+
+struct skilltree_node
+{
+	int level;
+	size_t decisions;
+	std::vector<Skill(*)()> skills;
+	std::vector<skilltree_node> next;
+};
+
+
+enum class ArmorType {LIGHT, MEDIUM, HEAVY};
+enum class WeaponType {SWORD1H, SWORD2H, STAFF2H, STAFF1H, DAGGER, SHIELD,
+                       CROSSBOW, BOW, MACE, AXE1H, AXE2H};
+
+struct attributes
+{
+	std::string name;
+	attr_type constitution;
+	attr_type strength;
+	attr_type intelligence;
+	attr_type dexterity;
+	attr_type initiative;
+};
+
+extern ini_object class_ini;
+extern ini_object race_ini;
+extern std::map<std::string, Skill(*)()> all_skills;
+extern std::vector<std::map<std::string, skilltree_node>> skilltrees;
+
+void init_class_ini();
+void init_race_ini();
+void init_skills();
+
+static inline void init_all()
+{
+	init_race_ini();
+	init_class_ini();
+	init_skills();
+}
+
+#endif // CPPRPG_COMMON_CONFIG_HPP

@@ -4,7 +4,9 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <cstdlib>
 #include <cpprpg/classes/skills.hpp>
+#include <cpprpg/common/config.hpp>
 
 #define DEFAULT_STRENGTH_CLASS 10
 #define DEFAULT_DEXTERITY_CLASS 10
@@ -12,12 +14,11 @@
 #define DEFAULT_INITATIVE_CLASS 10
 #define DEFAULT_CONSTITUTION_CLASS 10
 #define DEFAULT_ARMOR_TYPE HEAVY
-#define LEVEL_CAP 100
 #define MAX_SKILLS_PER_CLASS 5
 #define MAX_SKILLS_PER_LEVEL 5
-using attr_type = int;
 
-class SkillNode
+
+class SkillNode //extra file
 {
 	Skill skill;
 	std::vector<SkillNode> next;
@@ -27,10 +28,6 @@ class SkillTree
 {
 	std::vector<SkillNode> head;
 };
-
-enum class ArmorType {LIGHT, MEDIUM, HEAVY}; // more global
-enum class WeaponType {SWORD1H, SWORD2H, STAFF2H, STAFF1H, DAGGER, SHIELD, CROSSBOW, BOW, MACE, AXE1H, AXE2H};
-
 class CharacterClass
 {
 	public:
@@ -57,6 +54,28 @@ class CharacterClass
 			skill_list(),
 			skill_tree()
 			{
+				auto section = class_ini.section_kv[classname];
+
+				try
+				{
+					constitution += std::stoi(section["constitution"], nullptr, 0);
+				} catch (...){}
+				try
+				{
+					strength += std::stoi(section["strength"], nullptr, 0);
+				} catch (...){}
+				try
+				{
+					dexterity += std::stoi(section["dexterity"], nullptr, 0);
+				} catch (...){}
+				try
+				{
+					intelligence += std::stoi(section["intelligence"], nullptr, 0);
+				} catch (...){}
+				try
+				{
+					initiative += std::stoi(section["initiative"], nullptr, 0);
+				} catch (...){}
 
 			}
 

@@ -4,9 +4,13 @@
 #include <cpprpg/common/config.hpp>
 #include <iostream>
 
+void print_skilltree(skilltree_node& root, int a = 0);
+
+
 int main()
 {
 	init_all();
+	print_skilltree(skilltrees["Warrior"]);
 	Character w("Elf","Mage");
 	std::cout << w.get_intelligence() << std::endl;
 	std::cout << w.get_dexterity() << std::endl;

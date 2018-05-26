@@ -7,15 +7,15 @@
 #include <string>
 
 using attr_type = int;
-#define CONFIG_FOLDER "/home/karl/github/cppRPG/config/"
+using lvl_type = int;
+#define CONFIG_FOLDER "/home/marc/Schreibtisch/cppRPG/config/"
 #define LEVEL_CAP 100
 
 class Skill;
 
 struct skilltree_node
 {
-	int level;
-	size_t decisions;
+	lvl_type level = 0;
 	std::vector<Skill(*)()> skills;
 	std::vector<skilltree_node> next;
 };
@@ -38,17 +38,19 @@ struct attributes
 extern ini_object class_ini;
 extern ini_object race_ini;
 extern std::map<std::string, Skill(*)()> all_skills;
-extern std::vector<std::map<std::string, skilltree_node>> skilltrees;
+extern std::map<std::string, skilltree_node> skilltrees;
 
 void init_class_ini();
 void init_race_ini();
 void init_skills();
+void init_skilltrees();
 
 static inline void init_all()
 {
 	init_race_ini();
 	init_class_ini();
 	init_skills();
+	init_skilltrees();
 }
 
 #endif // CPPRPG_COMMON_CONFIG_HPP

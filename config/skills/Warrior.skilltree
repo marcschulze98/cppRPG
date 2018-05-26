@@ -1,3 +1,5 @@
 0:Hit
 5:Bash
 10:Defend~Taunt
+15:Hit~Hit|Bash
+20:Hit~Defend|Bash|Defend

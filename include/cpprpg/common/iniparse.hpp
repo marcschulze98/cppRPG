@@ -13,7 +13,7 @@
 using ini_kv = std::map<std::string, std::string>;
 using ini_section =  std::map<std::string, ini_kv>;
 
-static void string_strip(std::string& str, const char* chars)
+static inline void string_strip(std::string& str, const char* chars)
 {
 	for (size_t i = 0; i < strlen(chars); ++i)
 		str.erase (std::remove(str.begin(), str.end(), chars[i]), str.end());

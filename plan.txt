@@ -22,7 +22,7 @@ Warrior~Mage~Rouge vector
 5:Bash~Defend ->1. branch decision
 8:Ruin Game ->2. branch
 10:tree1~tree2~tree3 -> next tree specialisation
-0:1~2|34| -> 1. branch
+0:1~2|34 -> 1. branch
 5|3~4
 7|8|9
 |6~123~10| etc.

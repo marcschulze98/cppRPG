@@ -5,18 +5,22 @@
 #include <cpprpg/common/iniparse.hpp>
 #include <vector>
 #include <string>
+#include <variant>
 
 using attr_type = int;
 using lvl_type = int;
+
 #define CONFIG_FOLDER "/home/marc/Schreibtisch/cppRPG/config/"
 #define LEVEL_CAP 100
 
 class Skill;
+using skill_ptr = Skill(*)();
+
 
 struct skilltree_node
 {
 	lvl_type level = 0;
-	std::vector<Skill(*)()> skills;
+	std::vector<std::variant<skill_ptr, std::string>> skills;
 	std::vector<skilltree_node> next;
 };
 

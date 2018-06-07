@@ -3,8 +3,10 @@
 #include <optional>
 #include <stdexcept>
 
-std::map<std::string, Skill(*)()> all_skills;
-std::map<std::string, skilltree_node> skilltrees;
+using namespace std;
+
+map<string, Skill(*)()> all_skills;
+map<string, skilltree_node> skilltrees;
 
 skilltree_node root;
 
@@ -17,9 +19,9 @@ void init_skills()
 	all_skills["Taunt"] = Skill::Taunt;
 }
 
-static std::vector<std::string> string_split(const std::string str, char delim)
+static vector<string> string_split(const string str, char delim)
 {
-	std::vector<std::string> ret(1);
+	vector<string> ret(1);
 	for(char c: str)
 	{
 		if(c != delim)
@@ -33,14 +35,14 @@ static std::vector<std::string> string_split(const std::string str, char delim)
 	return ret;
 }
 
-std::vector<skilltree_node> parse_skilltree_line(std::ifstream& file)
+optional<vector<skilltree_node>> parse_skilltree_line(ifstream& file)
 {
-	std::vector<skilltree_node> nodes;
+	vector<skilltree_node> nodes;
 
 	if(file.eof())
 		return nodes;
 
-	std::string line;
+	string line;
 	size_t next;
 	lvl_type level;
 
@@ -48,21 +50,21 @@ std::vector<skilltree_node> parse_skilltree_line(std::ifstream& file)
 	{
 		if(file.eof())
 			return nodes;
-		std::getline(file, line);
+		getline(file, line);
 	} while(line.size() == 0);
 
 	try
 	{
-		level = std::stoi(line, &next, 0);
+		level = stoi(line, &next, 0);
 	} catch(...){
-		std::cerr << "Level number out of range" << std::endl;
-		std::abort();
+		cerr << "Level number couldn't be parsed" << endl;
+		return nullopt;
 	}
 
 	if(line[next++] != ':')
 	{
-		std::cerr << "Expected ':', got " << line[next-1] << std::endl;
-		std::abort();
+		cerr << "Expected ':', got " << line[next-1] << endl;
+		return nullopt;
 	}
 
 
@@ -74,7 +76,12 @@ std::vector<skilltree_node> parse_skilltree_line(std::ifstream& file)
 		auto choices = string_split(branches[i], '~');
 		for(size_t j = 0; j < choices.size(); j++)
 		{
-			nodes.back().skills.push_back(all_skills[choices[j]]);
+			if(all_skills.count(choices[j]) == 0)
+			{
+				nodes.back().skills.push_back(choices[j]);
+			} else {
+				nodes.back().skills.push_back(all_skills[choices[j]]);
+			}
 		}
 
 	}
@@ -87,35 +94,46 @@ void print_skilltree(skilltree_node& root, int a = 0)
 {
 	for(auto i: root.skills)
 	{
-		std::cout << "current " << a << ": " << i().name << std::endl;
+
+		if(std::holds_alternative<skill_ptr>(i))
+			cout << "current " << a << ": " << std::get<skill_ptr>(i)().name<< endl;
 	}
 
 	for(auto i: root.next)
 	{
-		std::cout << "children of " << a << ": " << std::endl;
+		cout << "children of " << a << ": " << endl;
 		print_skilltree(i, a+1);
 	}
 }
 
-static void parse_skilltree_sub(std::vector<skilltree_node*> last, std::ifstream& skilltree_file)
+static bool parse_skilltree_sub(vector<skilltree_node*> last, ifstream& skilltree_file)
 {
 	if(skilltree_file.eof())
-		return;
+		return true;;
 
 	size_t current_parent = 0;
 	size_t left = last[current_parent]->skills.size();
 	auto tmp = parse_skilltree_line(skilltree_file);
-	for(skilltree_node& current_child: tmp)
+	if(!tmp)
+	{
+		return false;
+	}
+	for(skilltree_node& current_child: *tmp)
 	{
 		if(left-- == 0)
 		{
 			current_parent++;
+			if(current_parent >= last.size())
+			{
+				cout << "Too many branches, expected " << last.size() << " but got more" << endl;
+				return false;
+			}
 			left = last[current_parent]->skills.size();
 		}
-		last[current_parent]->next.push_back(std::move(current_child));
+		last[current_parent]->next.push_back(move(current_child));
 	}
 
-	std::vector<skilltree_node*> current;
+	vector<skilltree_node*> current;
 	for(auto old_node: last)
 	{
 		for(auto& new_node: old_node->next)
@@ -124,27 +142,31 @@ static void parse_skilltree_sub(std::vector<skilltree_node*> last, std::ifstream
 		}
 	}
 
-	parse_skilltree_sub(current, skilltree_file);
-
-	return;
+	return parse_skilltree_sub(current, skilltree_file);
 }
 // TODO: add skilltree continuation, allow left skill skip (|Bash)
-std::optional<skilltree_node> parse_skilltree(std::string filename)
+optional<skilltree_node> parse_skilltree(string filename)
 {
-	std::ifstream skilltree_file(filename);
+	ifstream skilltree_file(filename);
 	if(!skilltree_file.is_open())
-		return std::nullopt;
+	{
+		cerr << "Couldn't open " << filename << endl;
+		return nullopt;
+	}
 
 	auto tmp = parse_skilltree_line(skilltree_file);
-	if(tmp.size() != 1)
+	if(!tmp)
 	{
-		std::cerr << "Found multiple skill branches at root level" << std::endl;
-		std::abort();
+		return nullopt;
+	} else if(tmp->size() != 1) {
+		cerr << "Found multiple skill branches at root level" << endl;
+		return nullopt;
 	}
-	root = std::move(tmp[0]);
-	std::vector<skilltree_node*> ptr;
+	root = move(tmp->front());
+	vector<skilltree_node*> ptr;
 	ptr.push_back(&root);
-	parse_skilltree_sub(ptr, skilltree_file);
+	if(!parse_skilltree_sub(ptr, skilltree_file))
+		return nullopt;
 
 	return root;
 }
@@ -152,7 +174,13 @@ std::optional<skilltree_node> parse_skilltree(std::string filename)
 void init_skilltrees()
 {
 	//TODO: actually walk through the config folder
-	skilltrees["Warrior"] = *parse_skilltree(std::string(CONFIG_FOLDER)+std::string("skills/")+std::string("Warrior.skilltree"));
+	auto tmp = parse_skilltree(string(CONFIG_FOLDER)+string("skills/")+string("Warrior.skilltree"));
+	if(!tmp)
+	{
+		cerr << "Failed to parse Warrior.skilltree" << endl;
+		std::abort();
+	}
+	skilltrees["Warrior"] = *tmp;
 }
 
 constexpr Skill Skill::Hit()
